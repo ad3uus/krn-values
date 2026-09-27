@@ -1,0 +1,711 @@
+<style>
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  color:#eee;
+  font:13px monospace;
+  background:
+    radial-gradient(circle at 15% 20%,#ff751855 0%,transparent 28%),
+    radial-gradient(circle at 85% 15%,#8e44ad44 0%,transparent 30%),
+    radial-gradient(circle at 70% 80%,#ff4b2040 0%,transparent 28%),
+    radial-gradient(circle at 20% 85%,#5b168844 0%,transparent 32%),
+    radial-gradient(circle at 50% 50%,#ff751810 0%,transparent 45%),
+    linear-gradient(135deg,#050305 0%,#140814 45%,#050205 100%);
+  background-attachment:fixed;
+  min-height:100vh;
+}
+
+.p{
+  padding:12px;
+  background:
+    linear-gradient(135deg,#0b070b 0%,#1a0a1a 50%,#090609 100%);
+  border:1px solid #ff7518aa;
+  border-radius:10px;
+  box-shadow:
+    0 0 8px #ff751855,
+    0 0 20px #ff751833,
+    0 0 45px #ff751822,
+    0 0 80px #8e44ad18,
+    inset 0 0 20px #ff751818,
+    inset 0 0 45px #8e44ad12;
+}
+
+h2{
+  margin:0 0 4px;
+  color:#ff7518;
+  letter-spacing:2px;
+  text-shadow:
+    0 0 5px #ff7518,
+    0 0 12px #ff7518,
+    0 0 25px #ff4b20,
+    0 0 45px #ff751855;
+}
+
+small{
+  color:#998;
+  text-shadow:0 0 6px #8e44ad88;
+}
+
+.info{
+  margin:10px 0;
+  padding:9px;
+  background:#100c10;
+  border:1px solid #ff751888;
+  border-radius:7px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  font-size:10px;
+  box-shadow:
+    0 0 8px #ff751833,
+    0 0 20px #8e44ad22,
+    inset 0 0 15px #ff751811;
+}
+
+.info span,.info>b{
+  padding:5px 7px;
+  background:#171017;
+  border-radius:4px;
+  box-shadow:
+    0 0 6px #ff751822,
+    inset 0 0 8px #8e44ad18;
+}
+
+.info b{
+  color:#ff9d38;
+  text-shadow:
+    0 0 5px #ff7518,
+    0 0 12px #ff751855;
+}
+
+.stats{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+  margin:8px 0
+}
+
+.stat{
+  background:#160d16;
+  padding:6px;
+  border-radius:5px;
+  border:1px solid #49334d;
+  box-shadow:
+    0 0 7px #8e44ad33,
+    0 0 15px #ff751811,
+    inset 0 0 10px #8e44ad18;
+}
+
+.stat b{
+  color:#ff8c32;
+  text-shadow:
+    0 0 5px #ff7518,
+    0 0 12px #ff751855;
+}
+
+input,select,button{
+  background:#120b12;
+  color:#eee;
+  border:1px solid #5b3b60;
+  border-radius:5px;
+  padding:7px;
+  font:inherit;
+  box-shadow:
+    0 0 5px #8e44ad22,
+    inset 0 0 7px #8e44ad12;
+  transition:
+    border-color .2s,
+    box-shadow .2s,
+    transform .2s;
+}
+
+input:focus,select:focus{
+  outline:none;
+  border-color:#ff7518;
+  box-shadow:
+    0 0 6px #ff7518,
+    0 0 15px #ff751855,
+    0 0 30px #ff751822,
+    inset 0 0 8px #ff751822;
+}
+
+button{
+  cursor:pointer;
+}
+
+button:hover{
+  border-color:#ff7518;
+  box-shadow:
+    0 0 7px #ff7518,
+    0 0 15px #ff751855,
+    0 0 30px #ff751822;
+  transform:translateY(-1px);
+}
+
+.tools{
+  display:grid;
+  grid-template-columns:2fr 1fr 1fr auto auto;
+  gap:5px;
+  margin:8px 0
+}
+
+.calc{
+  padding:9px;
+  border:1px solid #ff751888;
+  border-radius:7px;
+  margin:8px 0;
+  background:
+    linear-gradient(135deg,#110b11,#190b19,#0d080d);
+  box-shadow:
+    0 0 8px #ff751833,
+    0 0 20px #ff751822,
+    0 0 40px #8e44ad18,
+    inset 0 0 20px #ff751811;
+}
+
+.calc>b{
+  color:#ff9d38;
+  text-shadow:
+    0 0 5px #ff7518,
+    0 0 12px #ff751855;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+  gap:8px;
+  max-height:600px;
+  overflow:auto;
+  padding:4px;
+}
+
+.grid::-webkit-scrollbar{
+  width:8px;
+}
+
+.grid::-webkit-scrollbar-track{
+  background:#080508;
+  border-radius:10px;
+  box-shadow:inset 0 0 8px #8e44ad22;
+}
+
+.grid::-webkit-scrollbar-thumb{
+  background:#ff7518aa;
+  border-radius:10px;
+  box-shadow:
+    0 0 6px #ff7518,
+    0 0 15px #ff751855;
+}
+
+.card{
+  position:relative;
+  background:
+    linear-gradient(145deg,#160f16 0%,#100a10 55%,#170c17 100%);
+  border:1px solid #49334d;
+  border-radius:7px;
+  padding:9px;
+  text-align:center;
+  transition:
+    transform .2s,
+    box-shadow .2s,
+    border-color .2s;
+  box-shadow:
+    0 0 5px #8e44ad22,
+    0 0 12px #ff751811,
+    inset 0 0 12px #8e44ad0d;
+}
+
+.card:hover{
+  transform:translateY(-3px) scale(1.015);
+  border-color:#ff7518;
+  box-shadow:
+    0 0 7px #ff7518,
+    0 0 15px #ff751888,
+    0 0 30px #ff751844,
+    0 0 55px #8e44ad33,
+    inset 0 0 18px #ff751818;
+}
+
+.card img{
+  width:75px;
+  height:75px;
+  object-fit:contain;
+  filter:
+    drop-shadow(0 0 4px #ff751866)
+    drop-shadow(0 0 10px #8e44ad44);
+  transition:
+    filter .2s,
+    transform .2s;
+}
+
+.card:hover img{
+  transform:scale(1.05);
+  filter:
+    drop-shadow(0 0 6px #ff7518)
+    drop-shadow(0 0 14px #ff7518aa)
+    drop-shadow(0 0 25px #8e44ad66);
+}
+
+.title{
+  font-weight:bold;
+  margin:4px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  text-shadow:
+    0 0 5px #ffffff22;
+}
+
+.row{
+  display:flex;
+  justify-content:space-between;
+  border-bottom:1px solid #29202b;
+  padding:4px
+}
+
+.v{
+  color:#ff8c32;
+  font-weight:bold;
+  text-shadow:
+    0 0 5px #ff7518,
+    0 0 12px #ff751855,
+    0 0 20px #ff4b2033;
+}
+
+.star{
+  border:0;
+  background:0;
+  font-size:18px;
+  color:#665b68;
+  box-shadow:none;
+  text-shadow:0 0 5px #8e44ad44;
+}
+
+.star:hover{
+  color:#ffb52e;
+  box-shadow:none;
+  text-shadow:
+    0 0 5px #ffb52e,
+    0 0 12px #ffb52e,
+    0 0 22px #ff751855;
+}
+
+.on{
+  color:#ffb52e;
+  text-shadow:
+    0 0 5px #ffb52e,
+    0 0 12px #ffb52e,
+    0 0 25px #ff7518;
+}
+
+.r,.tag{
+  position:absolute;
+  top:5px;
+  padding:2px 4px;
+  font-size:8px;
+  border-radius:3px;
+  text-shadow:
+    0 0 4px #fff8;
+}
+
+.r{
+  right:5px;
+  box-shadow:
+    0 0 5px #8e44ad88,
+    0 0 12px #8e44ad44;
+}
+
+.tag{
+  left:5px;
+  background:#ff4b20;
+  box-shadow:
+    0 0 5px #ff4b20,
+    0 0 12px #ff4b2088,
+    0 0 22px #ff4b2044;
+}
+
+.rise{
+  background:#9b59b6;
+  box-shadow:
+    0 0 5px #9b59b6,
+    0 0 12px #9b59b688;
+}
+
+/* 🌈 SUPER GLOW RAINBOW CHROMA */
+.chroma{
+  border-color:#ff0000;
+  animation:
+    chromaRainbow 3s linear infinite,
+    chromaPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes chromaRainbow{
+  0%{
+    border-color:#ff0000;
+    box-shadow:
+      0 0 6px #ff0000,
+      0 0 15px #ff000088,
+      0 0 30px #ff000044,
+      inset 0 0 12px #ff000022;
+  }
+
+  16%{
+    border-color:#ff7a00;
+    box-shadow:
+      0 0 6px #ff7a00,
+      0 0 15px #ff7a0088,
+      0 0 30px #ff7a0044,
+      inset 0 0 12px #ff7a0022;
+  }
+
+  33%{
+    border-color:#ffff00;
+    box-shadow:
+      0 0 6px #ffff00,
+      0 0 15px #ffff0088,
+      0 0 30px #ffff0044,
+      inset 0 0 12px #ffff0022;
+  }
+
+  50%{
+    border-color:#00ff00;
+    box-shadow:
+      0 0 6px #00ff00,
+      0 0 15px #00ff0088,
+      0 0 30px #00ff0044,
+      inset 0 0 12px #00ff0022;
+  }
+
+  66%{
+    border-color:#00ffff;
+    box-shadow:
+      0 0 6px #00ffff,
+      0 0 15px #00ffff88,
+      0 0 30px #00ffff44,
+      inset 0 0 12px #00ffff22;
+  }
+
+  83%{
+    border-color:#0066ff;
+    box-shadow:
+      0 0 6px #0066ff,
+      0 0 15px #0066ff88,
+      0 0 30px #0066ff44,
+      inset 0 0 12px #0066ff22;
+  }
+
+  100%{
+    border-color:#ff00ff;
+    box-shadow:
+      0 0 6px #ff00ff,
+      0 0 15px #ff00ff88,
+      0 0 30px #ff00ff44,
+      inset 0 0 12px #ff00ff22;
+  }
+}
+
+@keyframes chromaPulse{
+  0%,100%{
+    filter:brightness(1);
+  }
+
+  50%{
+    filter:brightness(1.18);
+  }
+}
+
+.ancient{
+  border-color:#8e44ad;
+  box-shadow:
+    0 0 6px #8e44ad,
+    0 0 15px #8e44ad55,
+    0 0 28px #8e44ad22,
+    inset 0 0 12px #8e44ad18;
+}
+
+.godly{
+  border-color:#ff4fa3;
+  box-shadow:
+    0 0 6px #ff4fa3,
+    0 0 15px #ff4fa355,
+    0 0 28px #ff4fa322,
+    inset 0 0 12px #ff4fa318;
+}
+
+.unique{
+  border-color:#ffb52e;
+  box-shadow:
+    0 0 6px #ffb52e,
+    0 0 15px #ffb52e55,
+    0 0 28px #ffb52e22,
+    inset 0 0 12px #ffb52e18;
+}
+
+.custom{
+  border-color:#5a435e;
+  box-shadow:
+    0 0 6px #8e44ad66,
+    0 0 15px #8e44ad33,
+    inset 0 0 12px #8e44ad12;
+}
+
+.empty{
+  text-align:center;
+  padding:20px;
+  color:#ff7518;
+  text-shadow:
+    0 0 6px #ff7518,
+    0 0 15px #ff751855;
+}
+
+#total{
+  margin:8px 0;
+  color:#ff8c32;
+  font-size:15px;
+  text-shadow:
+    0 0 5px #ff7518,
+    0 0 12px #ff751855,
+    0 0 25px #ff751822;
+}
+
+#list div{
+  display:flex;
+  justify-content:space-between;
+  padding:4px;
+  border-bottom:1px solid #29202b
+}
+
+#list button{
+  padding:2px 6px;
+}
+
+@media(max-width:600px){
+  .tools{grid-template-columns:1fr 1fr}
+  .tools input{grid-column:1/-1}
+  .grid{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+
+<div class=p>
+
+<h2>🎃 KRN VALUES 👻</h2>
+<small>🕸️ SPOOKY SEASON • VALUE LIST 🕷️</small>
+
+<div class=info>
+<b>☠️ KILLER OR NOT VALUE LIST</b>
+<span>📅 Values Updated: <b>Sep 20, 2026</b></span>
+<span>👤 Value List Creator: <b>ad3uus</b></span>
+<span>🎮 Game Creator: <b>SkxllishRay</b></span>
+<span>🛡️ List Moderators: <b>Night0sphere</b></span>
+<span>✏️ Contributors: <b>Night0sphere, Maxspooky0</b></span>
+</div>
+
+<div class=calc>
+<b>🎃 VALUE CALCULATOR</b>
+<select id=ci></select>
+<button onclick="q.value=Math.max(1,+q.value-1)">−</button>
+<input id=q type=number value=1 min=1 style="width:45px">
+<button onclick="q.value++">+</button>
+<button onclick=add()>ADD</button>
+<button onclick="C=[];draw()">CLEAR</button>
+<div id=total>💀 TOTAL VALUE: <b>0</b></div>
+<div id=list></div>
+</div>
+
+<div class=stats>
+<div class=stat>📦 ITEMS: <b id=count>0</b></div>
+<div class=stat>🔥 HOT: <b id=hot>0</b></div>
+<div class=stat>📈 RISING: <b id=rise>0</b></div>
+<div class=stat>⭐ FAVORITES: <b id=fav>0</b></div>
+</div>
+
+<div class=tools>
+<input id=s placeholder="🔎 Search weapons..." oninput=render()>
+
+<select id=r onchange=render()>
+<option value=all>🎃 ALL RARITIES</option>
+<option>chroma</option>
+<option>ancient</option>
+<option>godly</option>
+<option>unique</option>
+<option>custom</option>
+</select>
+
+<select id=o onchange=render()>
+<option value=newest>🕯️ NEWEST</option>
+<option value=oldest>📜 OLDEST</option>
+<option value=high>💰 HIGHEST VALUE</option>
+<option value=low>💀 LOWEST VALUE</option>
+</select>
+
+<button onclick="fo=!fo;render()">⭐</button>
+<button onclick=random()>🎲</button>
+</div>
+
+<div class=grid id=x></div>
+
+</div>
+
+<script>
+let F=JSON.parse(localStorage.krnFav||"[]"),C=[],fo=0;
+
+let A=[
+["Rubyscope","custom","50,000","5/5","https://cdn.discordapp.com/attachments/1535537158591479848/1539240787521437818/20260815_200902.png?ex=6aa7e031&is=6aa68eb1&hm=7ac364fd196e390b62900753ce036c4f3fa799edc69a431109118917ae9d8667&",""],
+["Ray's scythe","custom","N/A","5/5","https://cdn.discordapp.com/attachments/1535537158591479848/1535750687810519161/Photoroom-20260806_130534.png?ex=6aa85cc8&is=6aa70b48&hm=b2d9c6962651e0d33d0bdba24699c6286293f11f1496c394af42ce3534d5cd67&",""],
+["C. WaterCannon","chroma","5,250","5/5","https://cdn.discordapp.com/attachments/1535537158591479848/1535747779349979257/20260610_115232.png?ex=6aa85a13&is=6aa70893&hm=97d419d17bdeb5ae3e70bd950034de85381e9913c301460b46dd3919b69212a2&",""],
+["C. Cosmicscope","chroma","2,750","5/5","https://cdn.discordapp.com/attachments/1535537158591479848/1535750688594985171/Photoroom-20260801_194053.png?ex=6aa85cc9&is=6aa70b49&hm=f38b4fd24c781b8959df84bebcaccad825bbb18eefbcc0677d35844ce70255f0&",""],
+["BlueBerry","godly","15,000","4/5","https://cdn.discordapp.com/attachments/1406781526280110231/1546198129445961748/20250531_223545.png?ex=6aa82339&is=6aa6d1b9&hm=bc97b7516ce03040f3b45bb5b43058a9c014fc54036a510baf930ddfd2709a5a&",""],
+["Bluessom","godly","15,000","4/5","https://cdn.discordapp.com/attachments/1406781526280110231/1546197521158897744/20250531_223706.png?ex=6aa822a8&is=6aa6d128&hm=90f0f1eb21660de400b6ec8d299fe52789b90c3a23af307941073b890e1c6a24&",""],
+["WaterCannon","ancient","800","4/5","https://cdn.discordapp.com/attachments/1535537158591479848/1535747779694170192/20260610_115026.png?ex=6aa85a13&is=6aa70893&hm=c329ded839c304055bf6aea803389b4f0863add98698c2a466b941add9ebe6c5&",""],
+["BeachVester","ancient","10,500","5/5","https://cdn.discordapp.com/attachments/1535537158591479848/1539240318900109432/20250615_185914.png?ex=6aa7dfc1&is=6aa68e41&hm=169d9d78a1b2d77583cc714b8a9bd284a2af15ef355588aa5a127ed242fb85e7&",""],
+["Spider","godly","4,500","3/5","https://cdn.discordapp.com/attachments/1510874687117459460/1549899525311692840/image0.jpg?ex=6aac5fea&is=6aab0e6a&hm=311d4622ce5e0ab562a4bfb40babcba4ef71f7baa5428a3e6171039f3451e64d&",""],
+["Synthescope","custom","4,000","5/5","https://placehold.co",""],
+["Snowflake","godly","3,000","3/5","https://placehold.co",""],
+["Party Blade","custom","2,250","4/5","https://placehold.co",""],
+["Cosmicscope","ancient","250","4/5","https://cdn.discordapp.com/attachments/1535537158591479848/1535750685788741652/20260731_210244.png?ex=6aa85cc8&is=6aa70b48&hm=40b19115d93c833711e0abbde2204c730c7a03b32b549bbd0ab273e5ea921fb8&",""],
+["GrappleHook","custom","20","3/5","https://placehold.co",""],
+["🤡","custom","10,500","4/5","https://cdn.discordapp.com/attachments/1510874687117459460/1548844793487032423/d8f85f9050f84724dc1086c1db4e7a95.jpg?ex=6aa8899e&is=6aa7381e&hm=58c62a698996dd9d94ae973c884305e658bcffefc5421af3a9c1a78eb26c707e&",""],
+["FancyBlade","godly","2,000","3/5","https://cdn.discordapp.com/attachments/1535537158591479848/1539240318426423398/20250615_185933.png?ex=6aa7dfc1&is=6aa68e41&hm=49088dbb180a89ea13da27ce97e175cd1c0d7c67254acc0d7f7813234433745b&",""],
+["G͇̿l̵͕͉̬̠͖͖̲̬̼̒͂̾͋͆ͪ̄͗ͪ͜ȉ̷̢̛̫̋̏t̴̨̥̟̺͙̻̟̭̤ͪ̋ͮ̏͑̽͛̀͒̔̅ͮ̂̉̽͘͢͢c̷̢̲͕̲͍̙͓͕̥̞̩̹͓̫̹͉͍̰̥̞̩̹͓̫̹͉͍̰̭̪̏ͩ̓ͫ͊̈́̀͌̐͆̾̓ͤ̃̃͆̏͌ͬ̃ͮͦ͐̊̿̆̒̄̾̑͆̾̓ͤ̃̃͆̏͌ͬ̃ͮͦ͐̊̿̆̒̄̾̑ͥ̑ͯ̾͟͞h̸̷̨̢̧̡͖̪̜̭̟͔͈̲̺̰̭̪͗͒̎̽̐͊̀̎̄̄̾̑ͥ̑ͯ̾͜͞͞ 3","custom","2,750","3/5","https://cdn.discordapp.com/attachments/1510874687117459460/1549898445186142231/image0.jpg?ex=6aac5ee9&is=6aab0d69&hm=cc82c2b0337e9081470463ccf8bd454e0fd3cf17d82fc1920e364e950dc4c265&",""],
+["Trident Of The Seas","unique","1000","4/5","https://cdn.discordapp.com/attachments/1535537158591479848/1539240317214261268/20250712_171407.png?ex=6aa7dfc1&is=6aa68e41&hm=e8a28932c7f01e338c76e3141974f81b49de073e12462779ca2556cd43d2f667&",""],
+["Elemental","unique","150","2/5","https://placehold.co",""],
+["C. AquaticEdge","chroma","150","3/5","https://cdn.discordapp.com/attachments/1535537158591479848/1535747781937856532/20260604_225400.png?ex=6aa85a14&is=6aa70894&hm=c6c387e7a80ad8842653a61360eb727334abd41695199eecf9818da0fc429b2c&",""],
+["AquaticEdge","godly","40","2/5","https://cdn.discordapp.com/attachments/1535537158591479848/1535747782420209724/20260604_135701.png?ex=6aa85a14&is=6aa70894&hm=5924998a75dc6b678042189ad62fdc1939d77a03561f14b643fad28c2a71c9ca&",""],
+["StrawberryShot","godly","10","1/5","https://cdn.discordapp.com/attachments/1535537158591479848/1535748063786967190/5ae38507-0a5e-4746-840a-7760aacadce5.png?ex=6aa85a57&is=6aa708d7&hm=33120e0aad12c177d88693d7cd59266ec05f958353c2c170df2f80b80f9e88e4&",""],
+["Pafait","godly","10","1/5","https://cdn.discordapp.com/attachments/1535537158591479848/1535747780231045161/20260609_163645.png?ex=6aa85a13&is=6aa70893&hm=7ba2be624368a88a75ca989a322cd11e9321c333e714ad3c588f673d9c1fc4af&",""],
+["Pirate's Sword","godly","500","3/5","https://cdn.discordapp.com/attachments/1535537158591479848/1535747781229281320/20260605_154931.png?ex=6aa85a13&is=6aa70893&hm=b27a729fb7915484b4fb667c20b94fa8b732e70d0b3e36b2a4a658c6f18fc3e3&",""],
+["Pirate's Gun","godly","500","3/5","https://cdn.discordapp.com/attachments/1535537158591479848/1535747780734099546/20260605_155112.png?ex=6aa85a13&is=6aa70893&hm=e0676e09973fab1420bfb19ec433280e91d737db0838d8e80733215a703daf09&",""],
+["C. CosmicBlade","chroma","75","3/5","https://cdn.discordapp.com/attachments/1535537158591479848/1535750688968015923/Photoroom-20260801_194149.png?ex=6aa85cc9&is=6aa70b49&hm=d9373da01a5cd7ad1a3385be53e67c5498378f269d990df04481fd63eb8519d1&",""],
+["CosmicBlade","godly","20","2/5","https://cdn.discordapp.com/attachments/1535537158591479848/1535750686371741736/20260731_210309.png?ex=6aa85cc8&is=6aa70b48&hm=18c3ee26dc2c92719209cd9de622c45ec4db0adb4781f5dc37f0b53a249592be&",""],
+["AlienBlade","godly","25","2/5","https://cdn.discordapp.com/attachments/1535537158591479848/1539239308886540318/20250709_175741.png?ex=6aa7ded0&is=6aa70b48&hm=b01ef7c4344b1b5711c8c9036ffc6e168c7f50faedd6d442261a72c6b20b5021&",""],
+["AlienSeeker","godly","25","2/5","https://cdn.discordapp.com/attachments/1535537158591479848/1539239307884363826/20250711_211258.png?ex=6aa7ded0&is=6aa70b48&hm=6e851e9d1442b60e2371dfbf6fe8bb74cd190e7a26fd714975a4cd343711cf78&",""],
+["Nova Sword","godly","150","3/5","https://cdn.discordapp.com/attachments/1535537158591479848/1535750687512727632/20260731_210427.png?ex=6aa85cc8&is=6aa70b48&hm=fe7ecafd36cce31b55afe73830790f0929572ad2212f3837a0e78829df15ff4f&",""],
+["Nova Gun","godly","150","3/5","https://cdn.discordapp.com/attachments/1535537158591479848/1535750686921199728/20260731_210357.png?ex=6aa85cc8&is=6aa70b48&hm=d988d7e06cc46e1ffca0acbd3e4d41d260977653ffa845aff24a33ab77eaf2ca&",""],
+["Chroma Luger","chroma","75","3/5","https://cdn.discordapp.com/attachments/1510874687117459460/1549897411433074780/image0.jpg?ex=6aac5df2&is=6aab0c72&hm=31c9f4a34cb1ff1e38da430e9fdd3e3ba9cd325d8fe41b043046ea307e2c68e0&",""],
+["Chroma Candy","chroma","50","3/5","https://cdn.discordapp.com/attachments/1510874687117459460/1549896116034740306/image0.jpg?ex=6aac5cbd&is=6aab0b3d&hm=ca6e79ee88a1abbc6ec21e7370d1d4d8ac950f7d71748746f6116f33cb5faeb4&",""],
+["Chroma Sugar","chroma","65","3/5","https://cdn.discordapp.com/attachments/1510874687117459460/1549896426635526184/image0.jpg?ex=6aac5d07&is=6aab0b87&hm=01552fb428cdaf77b4fb1e2add45bba9f50716190213228faf012bf0e73e171a&",""],
+["C. TravelerGun","chroma","50","3/5","https://cdn.discordapp.com/attachments/1510874687117459460/1549897025682669668/image0.jpg?ex=6aac5d96&is=6aab0c16&hm=03793740a8ec5464858c791ef146d38367adaa73f6cae36cd5edc662f9b076dc&",""],
+["BeachReaver","ancient","500","3/5","https://placehold.co",""],
+["NightReaver","ancient","500","3/5","https://placehold.co",""],
+["Eternity Scythe","ancient","350","3/5","https://cdn.discordapp.com/attachments/1535537158591479848/1539239129055887471/20251115_134902.png?ex=6aabd326&is=6aaa81a6&hm=8e0b98bc35f756ed737f02529f436a2fef0212abe05a36a1ac8199e931dc0bb1&",""],
+["InfectedScope","ancient","20","3/5","https://placehold.co",""],
+["InfectedBlade","godly","15","3/5","https://placehold.co",""],
+["Chroma Spirit","chroma","150","3/5","https://placehold.co",""],
+["Chroma Soul","chroma","150","3/5","https://placehold.co",""],
+["Celebratic Knife","godly","150","3/5","https://placehold.co",""],
+["Celebratic Gun","godly","150","3/5","https://placehold.co",""],
+["Rose","godly","150","3/5","https://placehold.co",""],
+["BouquetShot","godly","150","3/5","https://placehold.co",""],
+["Kitty's Elemental","godly","150","3/5","https://placehold.co",""],
+["Kitty's Gun","godly","150","3/5","https://placehold.co",""],
+
+["Candi-al","godly","10","2/5","https://placehold.co",""],
+["Sweet Candy","godly","75","3/5","https://placehold.co",""],
+["Caramel Scope","ancient","150","3/5","https://placehold.co",""],
+["MangoVester","ancient","150","4/5","https://placehold.co",""],
+["HoneyVester","ancient","150","4/5","https://placehold.co",""],
+["Choco Scythe","ancient","150","4/5","https://placehold.co",""],
+["Choco Scope","ancient","150","4/5","https://placehold.co",""],
+["GummyScope","ancient","150","3/5","https://placehold.co",""],
+["Chewy Scope","ancient","10","2/5","https://placehold.co",""],
+["Cotton Candy","godly","75","3/5","https://placehold.co",""],
+["Sweetellation","godly","75","2.5/5","https://placehold.co",""],
+["Sweet Axe","godly","75","3/5","https://placehold.co",""],
+["Loliblast","godly","75","3/5","https://placehold.co",""],
+
+["Gold Charkma","unique","175","4/5","https://placehold.co",""],
+["SakuraVester","ancient","150","4/5","https://placehold.co",""],
+["Shuriken","ancient","150","3/5","https://placehold.co",""],
+["PeaceReaver","ancient","150","4/5","https://placehold.co",""],
+["Yin Yang Sword","godly","75","3/5","https://placehold.co",""],
+["Warrior Blade","godly","75","3/5","https://placehold.co",""],
+["Warrior Gun","godly","75","3/5","https://placehold.co",""],
+["Bamboo Sword","godly","10","1/5","https://placehold.co",""],
+
+["Starryscope","ancient","150","4/5","https://placehold.co",""],
+["Moon Staff","ancient","150","4/5","https://placehold.co",""],
+["Moonial","ancient","150","3/5","https://placehold.co",""],
+["Moon Scythe","ancient","150","4/5","https://placehold.co",""],
+["Lunar Bow","ancient","150","4/5","https://placehold.co",""],
+["Amethyst Axe","godly","150","3/5","https://placehold.co",""],
+["Moonscope","ancient","10","2/5","https://placehold.co",""],
+["Amethyst Gun","godly","75","3/5","https://placehold.co",""],
+["Amethyst Sword","godly","75","3/5","https://placehold.co",""],
+["Starrelation","godly","75","3/5","https://placehold.co",""],
+["Palm","godly","1,000","3/5","https://placehold.co",""],
+["TravelerScope","ancient","500","3/5","https://placehold.co",""],
+["Nothing","chroma Supreme","-1","inf/5","https://cdn.discordapp.com/attachments/1510874687117459460/1551386815657803836/5df40dcdc2cbc6d0bde137077af4f965.jpg?ex=6ab1c910&is=6ab07790&hm=7d7bc5e677e8776f4e667e46a6d4359b4fe213cefafb377523d09a63c3718c79&","hot,rise"]
+];
+
+function render(){
+let z=r.value,q=s.value.toLowerCase(),t=o.value;
+let a=A.filter(x=>x[0].toLowerCase().includes(q)&&(z=="all"||x[1]==z)&&(!fo||F.includes(x[0])));
+let v=x=>+x[2].replace(/,/g,"")||0;
+
+a.sort((x,y)=>
+t=="newest"?A.indexOf(y)-A.indexOf(x):
+t=="oldest"?A.indexOf(x)-A.indexOf(y):
+t=="high"?v(y)-v(x):
+v(x)-v(y)
+);
+
+count.textContent=a.length;
+hot.textContent=A.filter(x=>x[5]=="hot").length;
+rise.textContent=A.filter(x=>x[5]=="rise").length;
+fav.textContent=F.length;
+
+x.innerHTML=a.map(a=>`<div class="card ${a[1]}">
+<span class=r>${a[1]}</span>
+${a[5]?`<span class="tag ${a[5]}">${a[5]=="hot"?"🔥 HOT":"📈 RISING"}</span>`:""}
+<img src="${a[4]}">
+<div class=title>${a[0]}</div>
+<div class=row>Value:<b class=v>${a[2]}</b></div>
+<div class=row>Demand:<span>${a[3]}</span></div>
+<button class="star ${F.includes(a[0])?"on":""}" onclick="favItem('${encodeURIComponent(a[0])}',this)">★</button>
+</div>`).join("")||"<div class=empty>🎃 No weapons found 👻</div>"
+}
+
+function favItem(n,b){
+n=decodeURIComponent(n);
+F=F.includes(n)?F.filter(x=>x!=n):[...F,n];
+localStorage.krnFav=JSON.stringify(F);
+b.classList.toggle("on");
+fav.textContent=F.length
+}
+
+function add(){
+let i=+ci.value,n=Math.max(1,+q.value),p=+A[i][2].replace(/,/g,"");
+if(!p)return;
+let e=C.find(x=>x.i==i);
+e?e.q+=n:C.push({i,q:n});
+draw()
+}
+
+function draw(){
+let z=C.reduce((a,e)=>
+  a+(+A[e.i][2].replace(/,/g,"")||0)*e.q,0);
+
+total.innerHTML=`💀 TOTAL VALUE: <b>${z.toLocaleString()}</b>`;
+
+list.innerHTML=C.map((e,i)=>
+  `<div>${A[e.i][0]} × ${e.q}<button onclick="C.splice(${i},1);draw()">×</button></div>`
+).join("")
+}
+
+function random(){
+let a=A[Math.random()*A.length|0];
+s.value=a[0];
+r.value="all";
+o.value="newest";
+fo=0;
+render()
+}
+
+ci.innerHTML=A.map((a,i)=>
+  `<option value=${i}>${a[0]} — ${a[2]}</option>`
+).join("");
+
+draw();
+render();
+</script>
